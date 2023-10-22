@@ -1,6 +1,11 @@
 import type { Blockchain } from "../types";
 
-import type { CHAT_MESSAGES, DELETE_MESSAGE,SUBSCRIBE, UNSUBSCRIBE  } from "./fromServer";
+import type {
+  CHAT_MESSAGES,
+  DELETE_MESSAGE,
+  SUBSCRIBE,
+  UNSUBSCRIBE,
+} from "./fromServer";
 import { BarterOffers } from "./index";
 
 export type SubscriptionType = "collection" | "individual";
@@ -97,6 +102,8 @@ export interface RemoteUserData {
   areFriends: boolean;
   requested: boolean;
   remoteRequested: boolean;
+  firstname: string;
+  lastname: string;
   username: string;
   searchedSolPubKey?: string; // Returns a public key if it is searched for
   searchedEthPubKey?: string;

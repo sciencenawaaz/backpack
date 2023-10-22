@@ -80,6 +80,8 @@ export type OnboardingData = {
   userId: string | undefined;
   complete: boolean;
   inviteCode: string | undefined;
+  firstname: string | null;
+  lastname: string | null;
   username: string | null;
   action: string;
   keyringType: KeyringType | null;
@@ -101,6 +103,8 @@ const defaultState = {
   userId: undefined,
   complete: false,
   inviteCode: undefined,
+  firstname: null,
+  lastname: null,
   username: null,
   action: "create",
   keyringType: null,
@@ -278,7 +282,8 @@ export function OnboardingProvider({
   //
   const createUser = useCallback(
     async (data: Partial<OnboardingData>) => {
-      const { inviteCode, userId, username, keyringType } = data;
+      const { inviteCode, userId, firstname, lastname, username, keyringType } =
+        data;
 
       // If userId is provided, then we are onboarding via the recover flow.
       if (userId) {
@@ -311,6 +316,8 @@ export function OnboardingProvider({
       // If we're down here, then we are creating a user for the first time.
       //
       const body = JSON.stringify({
+        firstname,
+        lastname,
         username,
         inviteCode,
         waitlistId: getWaitlistId?.(),
