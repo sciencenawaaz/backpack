@@ -197,6 +197,7 @@ export const getUserByUsername = async (username: string) => {
   if (!response.auth_users[0]) {
     throw new Error("user not found");
   }
+  //@ts-ignore
   return transformUser(response.auth_users[0]);
 };
 
@@ -227,6 +228,7 @@ export const getUser = async (id: string, onlyActiveKeys?: boolean) => {
   if (!response.auth_users_by_pk) {
     throw new Error("user not found");
   }
+  //@ts-ignore
   return transformUser(response.auth_users_by_pk, onlyActiveKeys);
 };
 
@@ -301,6 +303,8 @@ const transformUser = (
  * Create a user
  */
 export const createUser = async (
+  firstname: string,
+  lastname: string,
   username: string,
   blockchainPublicKeys: Array<{ blockchain: Blockchain; publicKey: string }>,
   waitlistId?: string | null,
@@ -328,6 +332,8 @@ export const createUser = async (
     insert_auth_users_one: [
       {
         object: {
+          firstname: firstname,
+          lastname: lastname,
           username: username,
           public_keys: {
             data: blockchainPublicKeys.map((b) => ({
@@ -387,7 +393,7 @@ export async function getUsersByPrefix({
       },
     ],
   });
-
+  //@ts-ignore
   return response.auth_users || [];
 }
 
@@ -522,6 +528,6 @@ export const getUserByPublicKeyAndChain = async (
       },
     ],
   });
-
+  //@ts-ignore
   return response.auth_users || [];
 };

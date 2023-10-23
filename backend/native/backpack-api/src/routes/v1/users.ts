@@ -41,8 +41,8 @@ import {
   CreatePublicKeys,
   CreateUserWithPublicKeys,
 } from "../../validation/user";
-
 const apiLimiter = rateLimit({
+  /* eslint-disable no-eval */
   windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
@@ -85,12 +85,13 @@ router.get("/", extractUserId, async (req, res) => {
   );
 
   const metadatas = await getUsers(users.map((x) => x.id));
+  //@ts-ignore
   const usersWithFriendshipMetadata: RemoteUserData[] = users
     .filter((x) => x.id !== uuid)
     .map(({ id, username }) => {
       const friendship = friendships.find((x) => x.id === id);
       const public_keys = (metadatas.find((x) => x.id === id)?.publicKeys ||
-        []) as { blockchain: string; publicKey: string }[];
+        []) as { blockchain: Blockchain; publicKey: string }[];
 
       return {
         id,
@@ -124,7 +125,7 @@ router.get("/jwt/xnft", extractUserId, async (req, res) => {
  * Create a new user.
  */
 router.post("/", async (req, res) => {
-  const { username, waitlistId, blockchainPublicKeys } =
+  const { firstname, lastname, username, waitlistId, blockchainPublicKeys } =
     CreateUserWithPublicKeys.parse(req.body);
 
   // Validate all the signatures
@@ -181,6 +182,8 @@ router.post("/", async (req, res) => {
   })();
 
   const user = await createUser(
+    firstname,
+    lastname,
     username,
     blockchainPublicKeys.map((b) => ({
       ...b,

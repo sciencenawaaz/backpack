@@ -3,6 +3,18 @@ import { ethers } from "ethers";
 import { z } from "zod";
 
 export const BaseCreateUser = z.object({
+  firstname: z
+    .string()
+    .regex(
+      /^[a-z0-9_]{3,15}$/,
+      "should be between 3-15 characters and can only contain numbers, letters, and underscores."
+    ),
+  lastname: z
+    .string()
+    .regex(
+      /^[a-z0-9_]{3,15}$/,
+      "should be between 3-15 characters and can only contain numbers, letters, and underscores."
+    ),
   username: z
     .string()
     .regex(
